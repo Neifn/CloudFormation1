@@ -222,7 +222,8 @@
              "VPCZoneIdentifier" : [ "subnet-bfd9b9c8", "subnet-c6269c9f" ],
              "Tags" : [ {
                  "Value": "NeifnWordPress",
-                 "Key": "Name"
+                 "Key": "Name",
+                 "PropagateAtLaunch": "true"
                  } ],
              "LaunchConfigurationName" : { "Ref" : "NeifnWordPressLaunch" },
              "MinSize" : "2",
@@ -237,12 +238,13 @@
              "VPCZoneIdentifier" : [ "subnet-bfd9b9c8", "subnet-c6269c9f" ],
              "Tags" : [ {
                  "Value": "NeifnMYSQL",
-                 "Key": "Name"
+                 "Key": "Name",
+                 "PropagateAtLaunch": "true"
                  } ],
              "LaunchConfigurationName" : { "Ref" : "NeifnMYSQLLaunch" },
              "MinSize" : "1",
              "MaxSize" : "1",
-             "DesiredCapacity" : "1",
+             "DesiredCapacity" : "1"
              }
          },
          "NeifnAnsibleServerGroup" : {
@@ -251,12 +253,13 @@
              "VPCZoneIdentifier" : [ "subnet-bfd9b9c8", "subnet-c6269c9f" ],
              "Tags" : [ {
                  "Value": "NeifnAsible",
-                 "Key": "Name"
+                 "Key": "Name",
+                 "PropagateAtLaunch": "true"
                  } ],
              "LaunchConfigurationName" : { "Ref" : "NeifnAnsibleLaunch" },
              "MinSize" : "1",
              "MaxSize" : "1",
-             "DesiredCapacity" : "1",
+             "DesiredCapacity" : "1"
              }
          },
           "NeifnBastionServerGroup" : {
@@ -265,12 +268,13 @@
              "VPCZoneIdentifier" : [ "subnet-bfd9b9c8", "subnet-c6269c9f" ],
              "Tags" : [ {
                  "Value": "NeifnBastion",
-                 "Key": "Name"
+                 "Key": "Name",
+		 "PropagateAtLaunch": "true"
                  } ],
              "LaunchConfigurationName" : { "Ref" : "NeifnBastionLaunch" },
              "MinSize" : "1",
              "MaxSize" : "1",
-             "DesiredCapacity" : "1",
+             "DesiredCapacity" : "1"
              }
           }
     }
