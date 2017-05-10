@@ -196,13 +196,13 @@
                  "Subnets" : [ "subnet-bfd9b9c8", "subnet-c6269c9f" ],
                  "SecurityGroups" : [ { "Ref" : "ELB" } ],
                  "Listeners" : [ {
-                 "LoadBalancerPort" : "80",
-                 "InstancePort" : "80",
+                   "LoadBalancerPort" : "80",
+                   "InstancePort" : "80",
+                   "Protocol" : "HTTP"
+                 } ],
                  "Tags" : [ {
                      "Value": "NeifnELB",
                      "Key": "Name"
-                 } ],
-                 "Protocol" : "HTTP"
                  } ],
                  "HealthCheck" : {
                      "Target" : {
