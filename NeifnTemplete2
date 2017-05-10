@@ -122,7 +122,13 @@
                  "FromPort" : "22",
                  "ToPort" : "22",
                  "CidrIp" : "0.0.0.0/0"
-             }],
+             },
+		{
+                 "IpProtocol" : "tcp",
+                 "FromPort" : "443",
+                 "ToPort" : "443",
+                 "CidrIp" : "0.0.0.0/0"
+	     }],
                "SecurityGroupIngress" : [
              {
                  "IpProtocol" : "tcp",
@@ -156,11 +162,10 @@
 			     {
                                     "Ref": "SSHRSAHostPrivateKey"
                              },
-			     "\" > /home/ubuntu/.ssh/id_rsa\n",
-			     "chmod 400 /home/ubuntu/.ssh/id_rsa\n",
-			     "chown ubuntu:ubuntu /home/ubuntu/.ssh/id_rsa\n",
-			     "sudo -H -u ubuntu bash -c \"git clone https://github.com/Neifn/AnsibleNeifn1\"\n",
-			     "sudo -H -u ubuntu bash -c \"ansible-playbook playbook.yml -i hosts -u ubuntu\"\n"
+			     "\" > /root/.ssh/id_rsa\n",
+			     "chmod 400 /root/.ssh/id_rsa\n",
+			     "git clone https://github.com/Neifn/AnsibleNeifn1 /opt/ansible\n",
+			     "cd /opt/ansible && ansible-playbook playbook.yml -i hosts -u ubuntu\n"
 			  ]
 			]
 		  }
