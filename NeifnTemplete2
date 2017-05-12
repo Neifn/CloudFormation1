@@ -245,12 +245,20 @@
                           "",
                           [
                              "#!/bin/bash\n",
+			     "adduser bastion -s /bin/bash\n"
                              "echo -e \"",
                              {
                                     "Ref": "SSHRSAHostPrivateKey"
                              },
-                             "\" > /root/.ssh/id_rsa\n",
-                             "chmod 400 /root/.ssh/id_rsa\n"
+                             "\" > /home/bastion/.ssh/id_rsa\n",
+                             "chmod 400 /home/bastion/.ssh/id_rsa\n",
+		 	     "echo -e \"",
+                             {
+                                    Hosts *
+				    User bastion
+				    StrictHostKeyChecking no
+                             },
+                             "\" > /home/bastion/.ssh/config\n",
                           ]
                         ]
                   }
