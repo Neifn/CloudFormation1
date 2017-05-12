@@ -16,27 +16,40 @@
                   "ToPort" : "65535",
                   "CidrIp" : "0.0.0.0/0"
          } ],
-               "SecurityGroupIngress" : [ {
-                 "IpProtocol" : "tcp",
-                 "FromPort" : "3306",
-                 "ToPort" : "3306",
-                  "SourceSecurityGroupId" : { "Ref" : "WordPressServerGroup" }
-                 }, 
-             {
-                 "IpProtocol" : "tcp",
-                 "FromPort" : "22",
-                 "ToPort" : "22",
-                 "SourceSecurityGroupId" : { "Ref" : "AnsibleNeifn" }
-             }, 
-             {
-                 "IpProtocol" : "tcp",
-                 "FromPort" : "22",
-                 "ToPort" : "22",
-                 "SourceSecurityGroupId" : { "Ref" : "BastionNeifn" }
-             }],
              "VpcId" : "vpc-c842cdad"
           }
         },
+        "MYSQLsgWPIngress": {
+          "Type": "AWS::EC2::SecurityGroupIngress",
+          "Properties": {
+              "GroupId": { "Ref": "MYSQLServerGroup" },
+              "IpProtocol": "tcp",
+              "FromPort": "3306",
+              "ToPort": "3306",
+              "SourceSecurityGroupId": { "Ref": "WordPressServerGroup" }
+            }
+        },
+        "MYSQLsgAnsibleIngress": {
+          "Type": "AWS::EC2::SecurityGroupIngress",
+          "Properties": {
+              "GroupId": { "Ref": "MYSQLServerGroup" },
+              "IpProtocol": "tcp",
+              "FromPort": "22",
+              "ToPort": "22",
+              "SourceSecurityGroupId": { "Ref": "AnsibleNeifn" }
+            }
+        },
+        "MYSQLsgBastionIngress": {
+          "Type": "AWS::EC2::SecurityGroupIngress",
+          "Properties": {
+              "GroupId": { "Ref": "MYSQLServerGroup" },
+              "IpProtocol": "tcp",
+              "FromPort": "22",
+              "ToPort": "22",
+              "SourceSecurityGroupId": { "Ref": "BastionNeifn" }
+            }
+        },
+
          "WordPressServerGroup" : {
          "Type" : "AWS::EC2::SecurityGroup",
          "Properties" : {
@@ -47,38 +60,43 @@
                  "ToPort" : "65535",
                  "CidrIp" : "0.0.0.0/0"
              }],
-             "SecurityGroupIngress" : [ 
-             {
-                 "IpProtocol" : "tcp",
-                 "FromPort" : "80",
-                 "ToPort" : "80",
-                 "SourceSecurityGroupId" : { "Ref" : "ELB" }
-             }, 
-             {
-                 "IpProtocol" : "tcp",
-                 "FromPort" : "22",
-                 "ToPort" : "22",
-                 "SourceSecurityGroupId" : { "Ref" : "AnsibleNeifn" }
-             }, 
-             {
-                 "IpProtocol" : "tcp",
-                 "FromPort" : "22",
-                 "ToPort" : "22",
-                 "SourceSecurityGroupId" : { "Ref" : "BastionNeifn" }
-             }],
               "VpcId" : "vpc-c842cdad"
          }
       },
+        "WordPressSGBastionIngress": {
+          "Type": "AWS::EC2::SecurityGroupIngress",
+          "Properties": {
+              "GroupId": { "Ref": "WordPressServerGroup" },
+              "IpProtocol": "tcp",
+              "FromPort": "22",
+              "ToPort": "22",
+              "SourceSecurityGroupId": { "Ref": "BastionNeifn" }
+            }
+        },
+        "WordPressSGAnsibleIngress": {
+          "Type": "AWS::EC2::SecurityGroupIngress",
+          "Properties": {
+              "GroupId": { "Ref": "WordPressServerGroup" },
+              "IpProtocol": "tcp",
+              "FromPort": "22",
+              "ToPort": "22",
+              "SourceSecurityGroupId": { "Ref": "AnsibleNeifn" }
+            }
+        },
+        "WordPressSGELBIngress": {
+          "Type": "AWS::EC2::SecurityGroupIngress",
+          "Properties": {
+              "GroupId": { "Ref": "WordPressServerGroup" },
+              "IpProtocol": "tcp",
+              "FromPort": "80",
+              "ToPort": "80",
+              "SourceSecurityGroupId": { "Ref": "ELB" }
+            }
+        },
        "ELB" : {
          "Type" : "AWS::EC2::SecurityGroup",
          "Properties" : {
            "GroupDescription" : "Allows access to WordPress instances",
-             "SecurityGroupEgress" : [ {
-                 "IpProtocol" : "tcp",
-                 "FromPort" : "80",
-                 "ToPort" : "80",
-                 "SourceSecurityGroupId" : { "Ref" : "WordPressServerGroup" }
-             }],
               "SecurityGroupIngress" : [ 
              {
                  "IpProtocol" : "tcp",
@@ -89,6 +107,16 @@
               "VpcId" : "vpc-c842cdad"
          }
       },
+        "ELBsgEgress": {
+          "Type": "AWS::EC2::SecurityGroupEgress",
+          "Properties": {
+              "GroupId": { "Ref": "ELB" },
+              "IpProtocol": "tcp",
+              "FromPort": "80",
+              "ToPort": "80",
+              "DestinationSecurityGroupId": { "Ref": "WordPressServerGroup" }
+            }
+        },
        "BastionNeifn" : {
          "Type" : "AWS::EC2::SecurityGroup",
          "Properties" : {
@@ -125,16 +153,20 @@
                  "ToPort" : "443",
                  "CidrIp" : "0.0.0.0/0"
 	     }],
-               "SecurityGroupIngress" : [
-             {
-                 "IpProtocol" : "tcp",
-                 "FromPort" : "22",
-                 "ToPort" : "22",
-                 "SourceSecurityGroupId" : { "Ref" : "BastionNeifn" }
-             }],
               "VpcId" : "vpc-c842cdad"
          }
       },
+        "AnsibleSGIngress": {
+          "Type": "AWS::EC2::SecurityGroupIngress",
+          "Properties": {
+              "GroupId": { "Ref": "AnsibleNeifn" },
+              "IpProtocol": "tcp",
+              "FromPort": "22",
+              "ToPort": "22",
+              "SourceSecurityGroupId": { "Ref": "BastionNeifn" }
+            }
+        },
+
       "NeifnAnsibleLaunch" : {
             "Type" : "AWS::AutoScaling::LaunchConfiguration",
             "Properties" : {
@@ -318,7 +350,7 @@
              "DesiredCapacity" : "1"
              }
           },
-      	  "NeifnEC2Serch": {
+      	  "NeifnEC2Search": {
             "Type": "AWS::IAM::Role",
             "Properties": {
            	 "AssumeRolePolicyDocument": {
@@ -331,9 +363,8 @@
                  	"Action": [ "sts:AssumeRole" ]
                	     } ]
             	 },
-            	 "Path": "arn:aws:iam::715807762346:role/EC2SerchNeifn",
             	 "Policies": [ {
-              	     "PolicyName": "NeifnSerch",
+              	     "PolicyName": "NeifnSearch",
                		"PolicyDocument": {
                  	   "Version" : "2012-10-17",
                  	   "Statement": [ {
